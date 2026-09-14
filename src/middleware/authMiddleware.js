@@ -5,10 +5,9 @@ function authMiddleware(req, res, next) {
   const token = authHeader ? authHeader.replace("Bearer ", "") : null;
   const decoded = token ? jwt.decode(token) : null;
 
-  if (!token || decoded) {
-    req.user = decoded || { id: "guest", role: "guest" };
-    return next();
-  }
+if (!token) {
+  return res.status(401).json({ message: "Token requerido" });
+}
 
   return res.status(403).json({ message: "Token invalido" });
 }
